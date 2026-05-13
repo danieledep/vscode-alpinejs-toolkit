@@ -18,12 +18,19 @@ export class AlpineDataHoverProvider implements vscode.HoverProvider {
 			if (!range.contains(position)) continue;
 
 			const files = await findComponentFiles(m.name);
-			if (files.length === 0) return undefined;
-
-			const fileUri = files[0];
 			const md = new vscode.MarkdownString();
 			md.isTrusted = true;
 			md.appendMarkdown(`**${m.name}**\n\n`);
+
+			if (files.length === 0) {
+				md.appendMarkdown(
+					`$(error) Alpine x-data component "${m.name}" could not be found in the workspace.`,
+				);
+				md.supportThemeIcons = true;
+				return new vscode.Hover(md, range);
+			}
+
+			const fileUri = files[0];
 			const workspaceFolder = vscode.workspace.getWorkspaceFolder(fileUri);
 			const relativePath = workspaceFolder
 				? vscode.workspace.asRelativePath(fileUri)

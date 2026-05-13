@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { findComponentFiles, findXDataComponentNames } from './alpineUtils';
 
 const TEMPLATE_DIRECTIVE_REGEX = /<template\b(?=[^>]*\bx-(?:for|if)\b)[^>]*>/gi;
 
@@ -42,7 +43,7 @@ function countDirectChildren(text: string, startOffset: number): { childCount: n
 	return { childCount, closingTagEnd: text.length };
 }
 
-function analyzeDocument(document: vscode.TextDocument): vscode.Diagnostic[] {
+async function analyzeDocument(document: vscode.TextDocument): Promise<vscode.Diagnostic[]> {
 	const text = document.getText();
 	const diagnostics: vscode.Diagnostic[] = [];
 	const regex = new RegExp(TEMPLATE_DIRECTIVE_REGEX.source, TEMPLATE_DIRECTIVE_REGEX.flags);
@@ -72,6 +73,30 @@ function analyzeDocument(document: vscode.TextDocument): vscode.Diagnostic[] {
 		}
 	}
 
+	const componentMatches = findXDataComponentNames(text);
+	const uniqueNames = [...new Set(componentMatches.map(m => m.name))];
+	const fileResults = await Promise.all(
+		uniqueNames.map(async name => ({ name, files: await findComponentFiles(name) }))
+	);
+	const missingNames = new Set(
+		fileResults.filter(r => r.files.length === 0).map(r => r.name)
+	);
+
+	for (const m of componentMatches) {
+		if (!missingNames.has(m.name)) { continue; }
+		const range = new vscode.Range(
+			document.positionAt(m.offset),
+			document.positionAt(m.offset + m.length)
+		);
+		const diag = new vscode.Diagnostic(
+			range,
+			`Alpine x-data component "${m.name}" could not be found in the workspace.`,
+			vscode.DiagnosticSeverity.Error
+		);
+		diag.source = 'alpinejs';
+		diagnostics.push(diag);
+	}
+
 	return diagnostics;
 }
 
@@ -89,17 +114,22 @@ export function setupAlpineDiagnostics(
 		return supportedLanguages.includes(doc.languageId) && doc.uri.scheme === 'file';
 	}
 
+	async function runAnalysis(document: vscode.TextDocument): Promise<void> {
+		const diagnostics = await analyzeDocument(document);
+		diagnosticCollection.set(document.uri, diagnostics);
+	}
+
 	function scheduleUpdate(document: vscode.TextDocument): void {
 		if (!isSupported(document)) { return; }
 		if (debounceTimer) { clearTimeout(debounceTimer); }
 		debounceTimer = setTimeout(() => {
-			diagnosticCollection.set(document.uri, analyzeDocument(document));
+			void runAnalysis(document);
 		}, DEBOUNCE_MS);
 	}
 
 	function immediateUpdate(document: vscode.TextDocument): void {
 		if (!isSupported(document)) { return; }
-		diagnosticCollection.set(document.uri, analyzeDocument(document));
+		void runAnalysis(document);
 	}
 
 	context.subscriptions.push(
