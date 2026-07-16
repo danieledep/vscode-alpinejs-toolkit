@@ -60,6 +60,10 @@ export function templateRequiredSeverity(): vscode.DiagnosticSeverity | undefine
 	return diagnosticSeverity('diagnostics.templateRequired', 'error');
 }
 
+export function missingComponentSeverity(): vscode.DiagnosticSeverity | undefined {
+	return diagnosticSeverity('diagnostics.missingComponent', 'error');
+}
+
 export function componentCompletionsEnabled(): boolean {
 	return getConfig().get<boolean>('completions.components', true);
 }

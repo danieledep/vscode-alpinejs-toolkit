@@ -160,6 +160,18 @@
 					"default": "error",
 					"markdownDescription": "Severity of the check that `x-if`, `x-for` and `x-teleport` are only used on `<template>` tags (Alpine silently ignores them elsewhere), or `off` to disable it."
 				},
+				"alpinejs.diagnostics.missingComponent": {
+					"type": "string",
+					"enum": [
+						"off",
+						"hint",
+						"information",
+						"warning",
+						"error"
+					],
+					"default": "error",
+					"markdownDescription": "Severity of the check that an `x-data` component reference has a backing file somewhere in the workspace, or `off` to disable it."
+				},
 				"alpinejs.languages": {
 					"type": "array",
 					"items": {

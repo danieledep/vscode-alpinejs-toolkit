@@ -27,7 +27,7 @@
       "patterns": [
         {
           "name": "meta.attribute.alpine",
-          "begin": "(?:\\b(x-)|(:|@|#))([a-zA-Z0-9\\-_]+)(?:(\\:[a-zA-Z\\-_]+))?((?:\\.[a-zA-Z0-9\\-_]+)+)?\\s*(=)",
+          "begin": "(?:\\b(x-)|(:|@|#)|\\b(on(?=[a-z]{2,}\\b)))([a-zA-Z0-9\\-_]+)(?:(\\:[a-zA-Z\\-_]+))?((?:\\.[a-zA-Z0-9\\-_]+)+)?\\s*(=)",
           "end": "(?<=\")|(?=[\\s<>`])",
           "captures": {
             "1": {
@@ -46,6 +46,9 @@
               "name": "entity.other.attribute-name.html"
             },
             "6": {
+              "name": "entity.other.attribute-name.html"
+            },
+            "7": {
               "name": "punctuation.separator.key-value.html"
             }
           },

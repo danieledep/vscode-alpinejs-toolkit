@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
+import { findComponentFiles, findXDataComponentNames } from './alpineUtils';
 import {
+	missingComponentSeverity,
 	supportedLanguages,
 	templateRequiredSeverity,
 	templateRootSeverity
@@ -117,7 +119,35 @@ function checkTemplateRoot(document: vscode.TextDocument, severity: vscode.Diagn
 	return diagnostics;
 }
 
-function analyzeDocument(document: vscode.TextDocument): vscode.Diagnostic[] {
+async function checkMissingComponents(document: vscode.TextDocument, severity: vscode.DiagnosticSeverity): Promise<vscode.Diagnostic[]> {
+	const componentMatches = findXDataComponentNames(document.getText());
+	const uniqueNames = [...new Set(componentMatches.map(m => m.name))];
+	const fileResults = await Promise.all(
+		uniqueNames.map(async name => ({ name, files: await findComponentFiles(name) }))
+	);
+	const missingNames = new Set(
+		fileResults.filter(r => r.files.length === 0).map(r => r.name)
+	);
+
+	const diagnostics: vscode.Diagnostic[] = [];
+	for (const m of componentMatches) {
+		if (!missingNames.has(m.name)) { continue; }
+		const range = new vscode.Range(
+			document.positionAt(m.offset),
+			document.positionAt(m.offset + m.length)
+		);
+		const diag = new vscode.Diagnostic(
+			range,
+			`Alpine x-data component "${m.name}" could not be found in the workspace.`,
+			severity
+		);
+		diag.source = 'alpinejs';
+		diagnostics.push(diag);
+	}
+	return diagnostics;
+}
+
+async function analyzeDocument(document: vscode.TextDocument): Promise<vscode.Diagnostic[]> {
 	const diagnostics: vscode.Diagnostic[] = [];
 	const rootSeverity = templateRootSeverity();
 	if (rootSeverity !== undefined) {
@@ -126,6 +156,10 @@ function analyzeDocument(document: vscode.TextDocument): vscode.Diagnostic[] {
 	const requiredSeverity = templateRequiredSeverity();
 	if (requiredSeverity !== undefined) {
 		diagnostics.push(...checkTemplateRequired(document, requiredSeverity));
+	}
+	const missingSeverity = missingComponentSeverity();
+	if (missingSeverity !== undefined) {
+		diagnostics.push(...await checkMissingComponents(document, missingSeverity));
 	}
 	return diagnostics;
 }
@@ -142,7 +176,13 @@ export function setupAlpineDiagnostics(context: vscode.ExtensionContext): void {
 	}
 
 	function anyCheckEnabled(): boolean {
-		return templateRootSeverity() !== undefined || templateRequiredSeverity() !== undefined;
+		return templateRootSeverity() !== undefined
+			|| templateRequiredSeverity() !== undefined
+			|| missingComponentSeverity() !== undefined;
+	}
+
+	async function runAnalysis(document: vscode.TextDocument): Promise<void> {
+		diagnosticCollection.set(document.uri, await analyzeDocument(document));
 	}
 
 	function scheduleUpdate(document: vscode.TextDocument): void {
@@ -152,13 +192,13 @@ export function setupAlpineDiagnostics(context: vscode.ExtensionContext): void {
 		if (existing) { clearTimeout(existing); }
 		debounceTimers.set(key, setTimeout(() => {
 			debounceTimers.delete(key);
-			diagnosticCollection.set(document.uri, analyzeDocument(document));
+			void runAnalysis(document);
 		}, DEBOUNCE_MS));
 	}
 
 	function immediateUpdate(document: vscode.TextDocument): void {
 		if (!anyCheckEnabled() || !isSupported(document)) { return; }
-		diagnosticCollection.set(document.uri, analyzeDocument(document));
+		void runAnalysis(document);
 	}
 
 	context.subscriptions.push(
@@ -170,6 +210,7 @@ export function setupAlpineDiagnostics(context: vscode.ExtensionContext): void {
 			if (
 				event.affectsConfiguration('alpinejs.diagnostics.templateRoot') ||
 				event.affectsConfiguration('alpinejs.diagnostics.templateRequired') ||
+				event.affectsConfiguration('alpinejs.diagnostics.missingComponent') ||
 				event.affectsConfiguration('alpinejs.languages')
 			) {
 				diagnosticCollection.clear();

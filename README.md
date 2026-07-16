@@ -105,6 +105,7 @@ Two sets, individually toggleable and applied without reloading:
 | `alpinejs.diagnostics.classShorthand` | `information` | Severity of the `:class` ternary → object syntax suggestion (`off`, `hint`, `information`, `warning`, `error`). |
 | `alpinejs.diagnostics.templateRoot` | `error` | Severity of the single-root-element check for `<template x-if/x-for>` (`off` disables it). |
 | `alpinejs.diagnostics.templateRequired` | `error` | Severity of the check flagging `x-if`/`x-for`/`x-teleport` outside a `<template>` tag (`off` disables it). |
+| `alpinejs.diagnostics.missingComponent` | `error` | Severity of the check flagging `x-data` component references with no backing file in the workspace (`off` disables it). |
 | `alpinejs.languages` | html, php, blade, jinja-html, liquid, nunjucks, njk, twig, astro, phoenix-heex, html-eex, erb, django-html, handlebars | Languages the providers are active for. |
 
 ## Supported Files
