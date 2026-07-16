@@ -1,0 +1,372 @@
+{
+	"x-data (basic)": {
+		"prefix": "x-data",
+		"body": "x-data=\"${1:expression}\"",
+		"description": "Defines a chunk of HTML as an Alpine component and provides the reactive data for that component to reference."
+	},
+	"x-init": {
+		"prefix": "x-init",
+		"body": "x-init=\"${1:expression}\"",
+		"description": "Allows you to hook into the initialisation phase of any element in Alpine."
+	},
+	"x-show": {
+		"prefix": "x-show",
+		"body": "x-show=\"${1:expression}\"",
+		"description": "Provides an expressive way to show and hide DOM elements."
+	},
+	"x-bind": {
+		"prefix": "x-bind",
+		"body": "x-bind:${1:attribute}=\"${2:expression}\"",
+		"description": "Allows you to set HTML attributes on elements based on the result of JavaScript expressions."
+	},
+	"x-on": {
+		"prefix": "x-on",
+		"body": "x-on:${1:event}=\"${2:expression}\"",
+		"description": "Allows you to easily run code on dispatched DOM events."
+	},
+	"x-text": {
+		"prefix": "x-text",
+		"body": "x-text=\"${1:expression}\"",
+		"description": "Sets the text content of an element to the result of a given expression."
+	},
+	"x-html": {
+		"prefix": "x-html",
+		"body": "x-html=\"${1:expression}\"",
+		"description": "Sets the innerHTML property of an element to the result of a given expression. Only use with trusted content."
+	},
+	"x-model": {
+		"prefix": "x-model",
+		"body": "x-model=\"${1:property}\"",
+		"description": "Allows you to bind the value of an input element to Alpine data."
+	},
+	"x-modelable": {
+		"prefix": "x-modelable",
+		"body": "x-modelable=\"${1:property}\"",
+		"description": "Allows you to expose any Alpine property as the target of the x-model directive."
+	},
+	"x-for (basic)": {
+		"prefix": "x-for",
+		"body": "x-for=\"${1:item} in ${2:items}\"",
+		"description": "Allows you to create DOM elements by iterating through a list. Must be used on a <template> tag."
+	},
+	"x-if (basic)": {
+		"prefix": "x-if",
+		"body": "x-if=\"${1:expression}\"",
+		"description": "Toggles an element by completely adding/removing it from the DOM. Must be used on a <template> tag."
+	},
+	"x-transition (basic)": {
+		"prefix": "x-transition",
+		"body": "x-transition${1|:enter,:enter-start,:enter-end,:leave,:leave-start,:leave-end|}=\"${2:classes}\"",
+		"description": "Creates smooth transitions between when an element is shown or hidden."
+	},
+	"x-effect": {
+		"prefix": "x-effect",
+		"body": "x-effect=\"${1:expression}\"",
+		"description": "Re-evaluates its expression whenever one of its dependencies changes."
+	},
+	"x-ignore": {
+		"prefix": "x-ignore",
+		"body": "x-ignore",
+		"description": "Prevents Alpine from initialising a section of HTML."
+	},
+	"x-ref": {
+		"prefix": "x-ref",
+		"body": "x-ref=\"${1:name}\"",
+		"description": "Gives direct access to a DOM element via $refs."
+	},
+	"x-cloak": {
+		"prefix": "x-cloak",
+		"body": "x-cloak",
+		"description": "Hides the element until Alpine is fully loaded. Requires [x-cloak] { display: none !important; } CSS."
+	},
+	"x-teleport": {
+		"prefix": "x-teleport",
+		"body": "x-teleport=\"${1:selector}\"",
+		"description": "Transports part of your Alpine template to another part of the DOM. Must be used on a <template> tag."
+	},
+	"x-id": {
+		"prefix": "x-id",
+		"body": "x-id=\"['${1:name}']\"",
+		"description": "Declares a new scope for IDs generated with $id()."
+	},
+	"x-mask (plugin)": {
+		"prefix": "x-mask",
+		"body": "x-mask=\"${1:99/99/9999}\"",
+		"description": "Formats a text input as the user types: 9 = digit, a = letter, * = any. Requires the @alpinejs/mask plugin."
+	},
+	"x-mask:dynamic (plugin)": {
+		"prefix": "x-mask:dynamic",
+		"body": "x-mask:dynamic=\"${1:\\$money(\\$input)}\"",
+		"description": "Generates the input mask from an expression; $input holds the current value. Requires the @alpinejs/mask plugin."
+	},
+	"x-intersect (plugin)": {
+		"prefix": "x-intersect",
+		"body": "x-intersect${1|:enter,:leave|}=\"${2:expression}\"",
+		"description": "Runs an expression when the element enters or leaves the viewport. Requires the @alpinejs/intersect plugin."
+	},
+	"x-resize (plugin)": {
+		"prefix": "x-resize",
+		"body": "x-resize=\"${1:expression}\"",
+		"description": "Runs an expression when the element resizes; $width and $height hold the dimensions. Requires the @alpinejs/resize plugin."
+	},
+	"x-trap (plugin)": {
+		"prefix": "x-trap",
+		"body": "x-trap=\"${1:expression}\"",
+		"description": "Traps keyboard focus inside the element while the expression is truthy. Requires the @alpinejs/focus plugin."
+	},
+	"x-collapse (plugin)": {
+		"prefix": "x-collapse",
+		"body": "x-collapse",
+		"description": "Animates the element's height when toggled with x-show. Requires the @alpinejs/collapse plugin."
+	},
+	"x-anchor (plugin)": {
+		"prefix": "x-anchor",
+		"body": "x-anchor${1|.bottom,.bottom-start,.bottom-end,.top,.top-start,.top-end,.left,.left-start,.left-end,.right,.right-start,.right-end|}=\"${2:\\$refs.button}\"",
+		"description": "Positions the element relative to another element. Requires the @alpinejs/anchor plugin."
+	},
+	"x-sort (plugin)": {
+		"prefix": "x-sort",
+		"body": "x-sort=\"${1:handleSort(\\$item, \\$position)}\"",
+		"description": "Makes the element's children drag-and-drop sortable. Requires the @alpinejs/sort plugin."
+	},
+	"x-sort:item (plugin)": {
+		"prefix": "x-sort:item",
+		"body": "x-sort:item=\"${1:key}\"",
+		"description": "Marks a child of an x-sort container as a draggable item. Requires the @alpinejs/sort plugin."
+	},
+	"x-sort:group (plugin)": {
+		"prefix": "x-sort:group",
+		"body": "x-sort:group=\"${1:name}\"",
+		"description": "Groups multiple x-sort lists so items can be dragged between them. Requires the @alpinejs/sort plugin."
+	},
+	".prevent": {
+		"prefix": ".prevent",
+		"body": ".prevent",
+		"description": "Calls event.preventDefault() on the browser event."
+	},
+	".stop": {
+		"prefix": ".stop",
+		"body": ".stop",
+		"description": "Calls event.stopPropagation() on the browser event."
+	},
+	".outside": {
+		"prefix": ".outside",
+		"body": ".outside",
+		"description": "Listens for clicks outside of the element it is attached to."
+	},
+	".window": {
+		"prefix": ".window",
+		"body": ".window",
+		"description": "Registers the event listener on the window object instead of the element."
+	},
+	".document": {
+		"prefix": ".document",
+		"body": ".document",
+		"description": "Registers the event listener on the document object instead of the element."
+	},
+	".once": {
+		"prefix": ".once",
+		"body": ".once",
+		"description": "x-on: only calls the handler once. x-intersect: only fires on the first viewport entry."
+	},
+	".half": {
+		"prefix": ".half",
+		"body": ".half",
+		"description": "x-intersect: fires when at least half the element is visible."
+	},
+	".full": {
+		"prefix": ".full",
+		"body": ".full",
+		"description": "x-intersect: fires when the element is (nearly) fully visible."
+	},
+	".threshold": {
+		"prefix": ".threshold",
+		"body": ".threshold.${1:50}",
+		"description": "x-intersect: fires at the given visibility percentage (0-100)."
+	},
+	".margin": {
+		"prefix": ".margin",
+		"body": ".margin.${1:200}px",
+		"description": "x-intersect: expands (or shrinks, if negative) the viewport boundary used for intersection."
+	},
+	".inert": {
+		"prefix": ".inert",
+		"body": ".inert",
+		"description": "x-trap: applies aria-hidden to everything outside the trapped element."
+	},
+	".noscroll": {
+		"prefix": ".noscroll",
+		"body": ".noscroll",
+		"description": "x-trap: prevents page scrolling while focus is trapped."
+	},
+	".noreturn": {
+		"prefix": ".noreturn",
+		"body": ".noreturn",
+		"description": "x-trap: skips returning focus to the previously focused element when the trap releases."
+	},
+	".noautofocus": {
+		"prefix": ".noautofocus",
+		"body": ".noautofocus",
+		"description": "x-trap: prevents auto-focusing the first focusable element when the trap engages."
+	},
+	".min": {
+		"prefix": ".min",
+		"body": ".min.${1:50}px",
+		"description": "x-collapse: collapses to a minimum height instead of fully hiding."
+	},
+	".ghost": {
+		"prefix": ".ghost",
+		"body": ".ghost",
+		"description": "x-sort: shows a semi-transparent placeholder while dragging."
+	},
+	".offset": {
+		"prefix": ".offset",
+		"body": ".offset.${1:10}",
+		"description": "x-anchor: adds pixel spacing between the element and its anchor."
+	},
+	".noflip": {
+		"prefix": ".noflip",
+		"body": ".noflip",
+		"description": "x-anchor: prevents repositioning when space runs out."
+	},
+	".debounce": {
+		"prefix": ".debounce",
+		"body": ".debounce${1:.${2:250}ms}",
+		"description": "Debounces the handler so it is only called after a period of inactivity (250ms by default)."
+	},
+	".throttle": {
+		"prefix": ".throttle",
+		"body": ".throttle${1:.${2:250}ms}",
+		"description": "Throttles the handler to at most one call per interval (250ms by default)."
+	},
+	".self": {
+		"prefix": ".self",
+		"body": ".self",
+		"description": "Only triggers when the event originated on the element itself, not a child."
+	},
+	".camel": {
+		"prefix": ".camel",
+		"body": ".camel",
+		"description": "Listens for the camelCased version of the event name."
+	},
+	".dot": {
+		"prefix": ".dot",
+		"body": ".dot",
+		"description": "Listens for the dot-separated version of the event name."
+	},
+	".passive": {
+		"prefix": ".passive",
+		"body": ".passive",
+		"description": "Registers a passive listener — important for touch events to not block scroll performance."
+	},
+	".capture": {
+		"prefix": ".capture",
+		"body": ".capture",
+		"description": "Executes the handler in the capturing phase of the event."
+	},
+	".lazy": {
+		"prefix": ".lazy",
+		"body": ".lazy",
+		"description": "Only updates an x-model property when the user focuses away from the input."
+	},
+	".number": {
+		"prefix": ".number",
+		"body": ".number",
+		"description": "Forces an x-model input to store the value as a JavaScript number."
+	},
+	".boolean": {
+		"prefix": ".boolean",
+		"body": ".boolean",
+		"description": "Forces an x-model input to store the value as a JavaScript boolean."
+	},
+	".fill": {
+		"prefix": ".fill",
+		"body": ".fill",
+		"description": "Uses the input's value attribute to fill the x-model property when it is empty."
+	},
+	".delay": {
+		"prefix": ".delay",
+		"body": ".delay.${1:250}ms",
+		"description": "Delays a transition."
+	},
+	".duration": {
+		"prefix": ".duration",
+		"body": ".duration.${1:500}ms",
+		"description": "Sets the transition duration."
+	},
+	".opacity": {
+		"prefix": ".opacity",
+		"body": ".opacity",
+		"description": "Applies the opacity transition only."
+	},
+	".scale": {
+		"prefix": ".scale",
+		"body": ".scale.${1:90}",
+		"description": "Applies the scale transition only."
+	},
+	".enter": {
+		"prefix": ".enter",
+		"body": ".enter",
+		"description": "Enter key modifier."
+	},
+	".escape": {
+		"prefix": ".escape",
+		"body": ".escape",
+		"description": "Escape key modifier."
+	},
+	".shift": {
+		"prefix": ".shift",
+		"body": ".shift",
+		"description": "Shift key modifier."
+	},
+	".ctrl": {
+		"prefix": ".ctrl",
+		"body": ".ctrl",
+		"description": "Control key modifier."
+	},
+	".cmd": {
+		"prefix": ".cmd",
+		"body": ".cmd",
+		"description": "Meta (Cmd) key modifier."
+	},
+	".meta": {
+		"prefix": ".meta",
+		"body": ".meta",
+		"description": "Meta key modifier."
+	},
+	".alt": {
+		"prefix": ".alt",
+		"body": ".alt",
+		"description": "Alt key modifier."
+	},
+	".space": {
+		"prefix": ".space",
+		"body": ".space",
+		"description": "Space key modifier."
+	},
+	".tab": {
+		"prefix": ".tab",
+		"body": ".tab",
+		"description": "Tab key modifier."
+	},
+	".up": {
+		"prefix": ".up",
+		"body": ".up",
+		"description": "ArrowUp key modifier."
+	},
+	".down": {
+		"prefix": ".down",
+		"body": ".down",
+		"description": "ArrowDown key modifier."
+	},
+	".left": {
+		"prefix": ".left",
+		"body": ".left",
+		"description": "ArrowLeft key modifier."
+	},
+	".right": {
+		"prefix": ".right",
+		"body": ".right",
+		"description": "ArrowRight key modifier."
+	}
+}

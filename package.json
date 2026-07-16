@@ -1,19 +1,22 @@
 {
-	"name": "alpinejs-comment-hl",
-	"displayName": "AlpineJS Comment Highlight",
-	"description": "Add Javascript syntax highlighting for Alpine.js x- attributes by adding a comment. Greys out inline comments and makes external components linkable.",
+	"name": "vscode-alpinejs-toolkit",
+	"displayName": "Alpine.js Toolkit",
+	"description": "Alpine.js IntelliSense tools: JavaScript syntax highlighting for x- attributes (comment-triggered or automatic), directive docs and autocompletion, $refs/$store/$magic suggestions, component file linking, snippets and template diagnostics.",
 	"author": "Daniele De Pietri",
 	"license": "MIT",
-	"version": "0.0.12",
+	"version": "0.1.0",
 	"publisher": "danieledep",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/danieledep/alpinejs-comment-hl"
+		"url": "https://github.com/danieledep/vscode-alpinejs-toolkit"
 	},
 	"keywords": [
 		"alpine",
 		"alpinejs",
-		"alpine.js"
+		"alpine.js",
+		"intellisense",
+		"snippets",
+		"highlight"
 	],
 	"main": "./out/extension.js",
 	"engines": {
@@ -27,10 +30,18 @@
 		"onLanguage:liquid",
 		"onLanguage:nunjucks",
 		"onLanguage:njk",
-		"onLanguage:twig"
+		"onLanguage:twig",
+		"onLanguage:astro",
+		"onLanguage:phoenix-heex",
+		"onLanguage:html-eex",
+		"onLanguage:erb",
+		"onLanguage:django-html",
+		"onLanguage:handlebars"
 	],
 	"categories": [
-		"Programming Languages"
+		"Programming Languages",
+		"Snippets",
+		"Linters"
 	],
 	"scripts": {
 		"compile": "tsc -p ./",
@@ -53,50 +64,132 @@
 			}
 		],
 		"configuration": {
-			"title": "Inline Alpine.js",
+			"title": "Alpine.js",
 			"properties": {
-				"inline-alpinejs.editor.minimap.showMarkSectionHeaders": true,
-				"inline-alpinejs.editor.minimap.markSectionHeaderRegex": {
+				"alpinejs.highlighting.mode": {
 					"type": "string",
-					"default": "^\\s*//\\s*MARK:\\s*(?<separator>-+)?\\s*(?<label>.*?)$",
-					"description": "Regular expression for detecting MARK section headers. Must include a 'label' named capture group."
+					"enum": [
+						"comment",
+						"always"
+					],
+					"default": "comment",
+					"enumDescriptions": [
+						"Highlight x- attribute values as JavaScript only when the value starts with a marker comment such as `// js`.",
+						"Always highlight x- attribute values as JavaScript. Note: template tags (Twig, Jinja, etc.) inside attribute values will also be treated as JavaScript."
+					],
+					"markdownDescription": "Controls when the JavaScript syntax highlighting inside Alpine.js `x-` attribute values is applied. Changing this requires a window reload (you will be prompted)."
+				},
+				"alpinejs.snippets.structured": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable the opinionated, structured snippets (e.g. `x-if`/`x-for` expand to full `<template>` blocks, multi-line `x-data`, full `x-transition` stack)."
+				},
+				"alpinejs.snippets.basic": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable the basic single-attribute snippets for all Alpine.js directives and event/transition modifiers (e.g. `x-show`, `.prevent`, `.debounce`)."
+				},
+				"alpinejs.completions.magics": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Suggest Alpine.js magic properties (`$el`, `$refs`, `$store`, `$dispatch`, ...) when typing `$` inside attribute values."
+				},
+				"alpinejs.completions.refs": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Suggest names defined with `x-ref=\"name\"` in the current file when typing `$refs.`."
+				},
+				"alpinejs.completions.stores": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Suggest store names registered with `Alpine.store('name', ...)` anywhere in the workspace when typing `$store.`."
+				},
+				"alpinejs.completions.components": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Suggest component names registered with `Alpine.data('name', ...)` anywhere in the workspace when typing inside `x-data=\"...\"`."
+				},
+				"alpinejs.completions.events": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Pair `$dispatch('...')` with listeners: suggest listened event names inside `$dispatch('...')` and dispatched event names after `@`/`x-on:`. Scans workspace templates for custom events."
+				},
+				"alpinejs.hovers.docs": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Show Alpine.js documentation on hover for directives and magic properties. Directive hovers apply outside plain HTML files (which already get them from the built-in HTML language service)."
+				},
+				"alpinejs.outline.components": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "List Alpine.js components (`x-data`) in the file outline and breadcrumbs."
+				},
+				"alpinejs.diagnostics.classShorthand": {
+					"type": "string",
+					"enum": [
+						"off",
+						"hint",
+						"information",
+						"warning",
+						"error"
+					],
+					"default": "information",
+					"markdownDescription": "Suggest Alpine's class object syntax when a `:class` ternary with an empty branch can be shortened, e.g. `:class=\"open ? 'is-open' : ''\"` → `:class=\"{ 'is-open': open }\"`. Sets the severity of the suggestion squiggle, or turns it off. A Quick Fix applies the rewrite."
+				},
+				"alpinejs.diagnostics.templateRoot": {
+					"type": "string",
+					"enum": [
+						"off",
+						"hint",
+						"information",
+						"warning",
+						"error"
+					],
+					"default": "error",
+					"markdownDescription": "Severity of the check that a `<template x-if>` or `<template x-for>` contains exactly one root element, or `off` to disable it."
+				},
+				"alpinejs.diagnostics.templateRequired": {
+					"type": "string",
+					"enum": [
+						"off",
+						"hint",
+						"information",
+						"warning",
+						"error"
+					],
+					"default": "error",
+					"markdownDescription": "Severity of the check that `x-if`, `x-for` and `x-teleport` are only used on `<template>` tags (Alpine silently ignores them elsewhere), or `off` to disable it."
+				},
+				"alpinejs.languages": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [
+						"html",
+						"php",
+						"blade",
+						"jinja-html",
+						"liquid",
+						"nunjucks",
+						"njk",
+						"twig",
+						"astro",
+						"phoenix-heex",
+						"html-eex",
+						"erb",
+						"django-html",
+						"handlebars"
+					],
+					"markdownDescription": "Language ids the Alpine.js providers (completions, snippets, links, hovers, diagnostics) are active for. Syntax highlighting injection is independent of this setting."
 				}
 			}
 		},
-		"snippets": [
-			{
-				"language": "html",
-				"path": "./snippets/alpinejs.code-snippets"
-			},
-			{
-				"language": "blade",
-				"path": "./snippets/alpinejs.code-snippets"
-			},
-			{
-				"language": "php",
-				"path": "./snippets/alpinejs.code-snippets"
-			},
-			{
-				"language": "jinja-html",
-				"path": "./snippets/alpinejs.code-snippets"
-			},
-			{
-				"language": "liquid",
-				"path": "./snippets/alpinejs.code-snippets"
-			},
-			{
-				"language": "nunjucks",
-				"path": "./snippets/alpinejs.code-snippets"
-			},
-			{
-				"language": "njk",
-				"path": "./snippets/alpinejs.code-snippets"
-			},
-			{
-				"language": "twig",
-				"path": "./snippets/alpinejs.code-snippets"
-			}
-		],
+		"html": {
+			"customData": [
+				"./syntaxes/alpine.html-data.json"
+			]
+		},
 		"grammars": [
 			{
 				"language": "inline-alpinejs",
@@ -105,6 +198,13 @@
 				"injectTo": [
 					"text.html.derivative",
 					"text.html.blade",
+					"text.html.php.blade",
+					"source.astro",
+					"source.heex",
+					"text.html.elixir",
+					"text.html.erb",
+					"text.html.django",
+					"text.html.handlebars",
 					"text.html.jinja",
 					"text.html.liquid",
 					"text.html.nunjucks",

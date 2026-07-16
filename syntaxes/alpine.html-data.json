@@ -1,0 +1,447 @@
+{
+  "version": 1.1,
+  "globalAttributes": [
+    {
+      "name": "x-data",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-data\n\nDefines a chunk of HTML as an Alpine component and provides the reactive data for that component to reference.\n\n```html\n<div x-data=\"{ open: false }\">\n\t<button @click=\"open = ! open\">Toggle Content</button>\n\t<div x-show=\"open\">Content...</div>\n</div>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/data"
+        }
+      ]
+    },
+    {
+      "name": "x-init",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-init\n\nAllows you to hook into the initialisation phase of any element in Alpine.\n\n```html\n<div x-init=\"console.log('I\\'m being initialized!')\"></div>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/init"
+        }
+      ]
+    },
+    {
+      "name": "x-show",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-show\n\nProvides an expressive way to show and hide DOM elements by toggling their CSS `display` property.\n\n```html\n<div x-data=\"{ open: false }\">\n\t<button x-on:click=\"open = ! open\">Toggle Dropdown</button>\n\t<div x-show=\"open\">Dropdown Contents...</div>\n</div>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/show"
+        }
+      ]
+    },
+    {
+      "name": "x-bind:",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-bind\n\nShorthand: `:`\n\nAllows you to set HTML attributes on elements based on the result of JavaScript expressions.\n\n```html\n<div x-data=\"{ placeholder: 'Type here...' }\">\n\t<input type=\"text\" x-bind:placeholder=\"placeholder\">\n</div>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/bind"
+        }
+      ]
+    },
+    {
+      "name": "x-bind:class",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-bind:class\n\nShorthand: `:class`\n\nDoes not overwrite existing class attributes, and supports a special class object syntax.\n\n```html\n<div :class=\"{ 'hidden': ! show }\">\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/bind#class-object-syntax"
+        }
+      ]
+    },
+    {
+      "name": "x-bind:style",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-bind:style\n\nShorthand: `:style`\n\nDoes not overwrite existing style attributes, and supports a special style object syntax.\n\n```html\n<div :style=\"{ color: 'red', display: 'flex' }\">\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/bind#binding-styles"
+        }
+      ]
+    },
+    {
+      "name": "x-on:",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-on\n\nShorthand: `@`\n\nAllows you to easily run code on dispatched DOM events.\n\n```html\n<button x-on:click=\"alert('Hello World!')\">Say Hi</button>\n```\n\nSupports key and behaviour modifiers like `.enter`, `.prevent`, `.stop`, `.outside`, `.window`, `.debounce`, `.throttle`."
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/on"
+        }
+      ]
+    },
+    {
+      "name": "x-text",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-text\n\nSets the text content of an element to the result of a given expression.\n\n```html\n<div x-data=\"{ username: 'calebporzio' }\">\n\tUsername: <strong x-text=\"username\"></strong>\n</div>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/text"
+        }
+      ]
+    },
+    {
+      "name": "x-html",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-html\n\nSets the `innerHTML` property of an element to the result of a given expression.\n\n⚠️ Only use on trusted content and never on user-provided content — using it with user input opens you up to XSS vulnerabilities.\n\n```html\n<div x-html=\"(await axios.get('/some/html/partial')).data\"></div>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/html"
+        }
+      ]
+    },
+    {
+      "name": "x-model",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-model\n\nAllows you to bind the value of an input element to Alpine data, keeping them in sync.\n\n```html\n<div x-data=\"{ message: '' }\">\n\t<input type=\"text\" x-model=\"message\">\n\t<span x-text=\"message\"></span>\n</div>\n```\n\nSupports modifiers like `.lazy`, `.number`, `.boolean`, `.debounce`, `.throttle`, `.fill`."
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/model"
+        }
+      ]
+    },
+    {
+      "name": "x-modelable",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-modelable\n\nAllows you to expose any Alpine property as the target of the `x-model` directive.\n\n```html\n<div x-data=\"{ number: 5 }\">\n\t<div x-data=\"{ count: 0 }\" x-modelable=\"count\" x-model=\"number\"></div>\n</div>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/modelable"
+        }
+      ]
+    },
+    {
+      "name": "x-for",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-for\n\nAllows you to create DOM elements by iterating through a list. Must be declared on a `<template>` element, and that template must contain exactly one root element.\n\n```html\n<ul x-data=\"{ colors: ['Red', 'Orange', 'Yellow'] }\">\n\t<template x-for=\"color in colors\">\n\t\t<li x-text=\"color\"></li>\n\t</template>\n</ul>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/for"
+        }
+      ]
+    },
+    {
+      "name": "x-if",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-if\n\nUsed for toggling elements on the page. Unlike `x-show`, it completely adds and removes the element from the DOM. Must be declared on a `<template>` element containing exactly one root element.\n\n```html\n<template x-if=\"open\">\n\t<div>Contents...</div>\n</template>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/if"
+        }
+      ]
+    },
+    {
+      "name": "x-transition",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-transition\n\nCreates smooth transitions when an element is shown or hidden with `x-show`.\n\n```html\n<div x-show=\"open\" x-transition></div>\n```\n\nUse directive stages (`x-transition:enter`, `x-transition:enter-start`, `x-transition:enter-end`, `x-transition:leave`, `x-transition:leave-start`, `x-transition:leave-end`) to apply your own CSS classes, or modifiers like `.duration.500ms`, `.delay.50ms`, `.opacity`, `.scale.80`."
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/transition"
+        }
+      ]
+    },
+    {
+      "name": "x-effect",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-effect\n\nRe-evaluates its expression whenever one of its dependencies changes. Think of it as a watcher where you don't have to specify what property to watch — any property used inside it is watched automatically.\n\n```html\n<div x-data=\"{ label: 'Hello' }\" x-effect=\"console.log(label)\"></div>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/effect"
+        }
+      ]
+    },
+    {
+      "name": "x-ignore",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-ignore\n\nPrevents Alpine from initialising a specific section of your HTML.\n\n```html\n<div x-data=\"{ label: 'From Alpine' }\">\n\t<div x-ignore>\n\t\t<span x-text=\"label\"></span>\n\t</div>\n</div>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/ignore"
+        }
+      ]
+    },
+    {
+      "name": "x-ref",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-ref\n\nIn combination with `$refs`, a useful utility for easily accessing DOM elements directly. A replacement for APIs like `getElementById` and `querySelector`.\n\n```html\n<button @click=\"$refs.text.remove()\">Remove Text</button>\n<span x-ref=\"text\">Hello 👋</span>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/ref"
+        }
+      ]
+    },
+    {
+      "name": "x-cloak",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-cloak\n\nHides the element it's attached to until Alpine is fully loaded on the page, preventing a flash of un-initialised content. Requires this CSS:\n\n```css\n[x-cloak] { display: none !important; }\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/cloak"
+        }
+      ]
+    },
+    {
+      "name": "x-teleport",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-teleport\n\nAllows you to transport part of your Alpine template to another part of the DOM on the page entirely — useful for modals and overlays. Must be declared on a `<template>` element; the value is a CSS selector for the target.\n\n```html\n<template x-teleport=\"body\">\n\t<div x-show=\"open\">Modal contents...</div>\n</template>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/teleport"
+        }
+      ]
+    },
+    {
+      "name": "x-id",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-id\n\nDeclares a new \"scope\" for any IDs generated with `$id()`. Accepts an array of ID names and adds a suffix to each `$id('...')` generated within it that is unique on the page.\n\n```html\n<div x-id=\"['text-input']\">\n\t<label :for=\"$id('text-input')\">Username</label>\n\t<input type=\"text\" :id=\"$id('text-input')\">\n</div>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/directives/id"
+        }
+      ]
+    },
+    {
+      "name": "x-mask",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-mask\n\n*Requires the `@alpinejs/mask` plugin.*\n\nAutomatically formats a text input field as the user types. Wildcards: `9` (digit), `a` (letter), `*` (any character); other characters are inserted literally.\n\n```html\n<input x-mask=\"99/99/9999\" placeholder=\"MM/DD/YYYY\">\n```\n\nUse `x-mask:dynamic` for masks derived from the input (`$input`) or the `$money()` helper."
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/mask"
+        }
+      ]
+    },
+    {
+      "name": "x-mask:dynamic",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-mask:dynamic\n\n*Requires the `@alpinejs/mask` plugin.*\n\nGenerates the mask from a JavaScript expression evaluated as the user types. The current value is available as `$input`, and the `$money($input, decimal?, thousands?, precision?)` helper formats currency.\n\n```html\n<input x-mask:dynamic=\"$input.startsWith('34') ? '9999 999999 99999' : '9999 9999 9999 9999'\">\n<input x-mask:dynamic=\"$money($input)\">\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/mask"
+        }
+      ]
+    },
+    {
+      "name": "x-intersect",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-intersect\n\n*Requires the `@alpinejs/intersect` plugin.*\n\nRuns an expression when the element enters the viewport. Use `x-intersect:leave` for exit. Modifiers: `.once`, `.half`, `.full`, `.threshold.50`, `.margin.200px`.\n\n```html\n<div x-intersect=\"shown = true\">\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/intersect"
+        }
+      ]
+    },
+    {
+      "name": "x-intersect:enter",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-intersect:enter\n\n*Requires the `@alpinejs/intersect` plugin.*\n\nAlias of `x-intersect` — runs the expression when the element enters the viewport."
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/intersect"
+        }
+      ]
+    },
+    {
+      "name": "x-intersect:leave",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-intersect:leave\n\n*Requires the `@alpinejs/intersect` plugin.*\n\nRuns the expression when the element leaves the viewport."
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/intersect"
+        }
+      ]
+    },
+    {
+      "name": "x-resize",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-resize\n\n*Requires the `@alpinejs/resize` plugin.*\n\nRuns an expression whenever the element changes size. Inside the expression, `$width` and `$height` hold the current dimensions in pixels. Use the `.document` modifier to observe the whole document instead.\n\n```html\n<div x-resize=\"width = $width; height = $height\">\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/resize"
+        }
+      ]
+    },
+    {
+      "name": "x-trap",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-trap\n\n*Requires the `@alpinejs/focus` plugin.*\n\nTraps keyboard focus inside the element while its expression is truthy — essential for accessible modals and dialogs. Modifiers: `.inert` (aria-hide the rest of the page), `.noscroll`, `.noreturn`, `.noautofocus`.\n\n```html\n<div x-show=\"open\" x-trap.inert.noscroll=\"open\">\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/focus"
+        }
+      ]
+    },
+    {
+      "name": "x-collapse",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-collapse\n\n*Requires the `@alpinejs/collapse` plugin.*\n\nSmoothly animates the element's height when toggled with `x-show`. Takes no value. Modifiers: `.duration.1000ms`, `.min.50px` (collapse to a minimum height instead of zero).\n\n```html\n<p x-show=\"expanded\" x-collapse>...</p>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/collapse"
+        }
+      ]
+    },
+    {
+      "name": "x-anchor",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-anchor\n\n*Requires the `@alpinejs/anchor` plugin.*\n\nPositions the element relative to a referenced element (e.g. `$refs.button`) — useful for dropdowns and popovers. Position modifiers: `.top`, `.bottom`, `.left`, `.right` with `-start`/`-end` variants; plus `.offset.10`, `.noflip`, `.fixed`, `.no-style` (use `$anchor.x`/`$anchor.y` manually).\n\n```html\n<div x-anchor.bottom-start.offset.10=\"$refs.button\">\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/anchor"
+        }
+      ]
+    },
+    {
+      "name": "x-sort",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-sort\n\n*Requires the `@alpinejs/sort` plugin.*\n\nMakes the element's children drag-and-drop sortable. The optional handler receives `$item` (the dragged item's key) and `$position` (its new index). Modifier: `.ghost`. Companions: `x-sort:item`, `x-sort:group`, `x-sort:handle`, `x-sort:ignore`, `x-sort:config`.\n\n```html\n<ul x-sort=\"handleSort($item, $position)\">\n\t<li x-sort:item=\"1\">foo</li>\n</ul>\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/sort"
+        }
+      ]
+    },
+    {
+      "name": "x-sort:item",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-sort:item\n\n*Requires the `@alpinejs/sort` plugin.*\n\nMarks a child of an `x-sort` container as a draggable item. The optional value is a key passed to the sort handler as `$item`."
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/sort"
+        }
+      ]
+    },
+    {
+      "name": "x-sort:group",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-sort:group\n\n*Requires the `@alpinejs/sort` plugin.*\n\nNames a sort group so items can be dragged between multiple `x-sort` lists sharing the same group name."
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/sort"
+        }
+      ]
+    },
+    {
+      "name": "x-sort:handle",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-sort:handle\n\n*Requires the `@alpinejs/sort` plugin.*\n\nMarks a child element as the drag handle for its sortable item."
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/sort"
+        }
+      ]
+    },
+    {
+      "name": "x-sort:config",
+      "description": {
+        "kind": "markdown",
+        "value": "### x-sort:config\n\n*Requires the `@alpinejs/sort` plugin.*\n\nPasses a SortableJS configuration object to customise drag behaviour.\n\n```html\n<ul x-sort x-sort:config=\"{ animation: 0 }\">\n```"
+      },
+      "references": [
+        {
+          "name": "Alpine.js Reference",
+          "url": "https://alpinejs.dev/plugins/sort"
+        }
+      ]
+    }
+  ]
+}

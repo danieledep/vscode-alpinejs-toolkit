@@ -27,6 +27,40 @@
       "patterns": [
         {
           "name": "meta.attribute.alpine",
+          "begin": "(?<!-)\\b(x-)(transition|ref|teleport|mask(?!:dynamic)|cloak|ignore)((?:\\:[a-zA-Z\\-_]+)?)((?:\\.[a-zA-Z0-9\\-_]+)*)\\s*(=)",
+          "end": "(?<=\")|(?<=')|(?=[\\s<>`])",
+          "captures": {
+            "1": {
+              "name": "entity.other.attribute-name.html"
+            },
+            "2": {
+              "name": "entity.other.attribute-name.html"
+            },
+            "3": {
+              "name": "entity.other.attribute-name.html"
+            },
+            "4": {
+              "name": "entity.other.attribute-name.html"
+            },
+            "5": {
+              "name": "punctuation.separator.key-value.html"
+            }
+          },
+          "patterns": [
+            {
+              "begin": "\"",
+              "end": "\"",
+              "name": "string.quoted.double.html"
+            },
+            {
+              "begin": "'",
+              "end": "'",
+              "name": "string.quoted.single.html"
+            }
+          ]
+        },
+        {
+          "name": "meta.attribute.alpine",
           "begin": "(?:\\b(x-)|(:|@|#))([a-zA-Z0-9\\-_]+)(?:(\\:[a-zA-Z\\-_]+))?((?:\\.[a-zA-Z0-9\\-_]+)+)?\\s*(=)",
           "end": "(?<=\")|(?=[\\s<>`])",
           "captures": {
@@ -65,7 +99,7 @@
               },
               "patterns": [
                 {
-                  "begin": "\\{?(?=\\s*(?://|/\\*)\\s*(?:#region|MARK:)?\\s*(?:javascript|js|JS))",
+                  "begin": "(?=\\s*[^\"\\s])",
                   "end": "(?=\")",
                   "contentName": "meta.embedded.inline.alpinejs",
                   "patterns": [

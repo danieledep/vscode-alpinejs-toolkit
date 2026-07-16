@@ -23,7 +23,7 @@ export class AlpineDataHoverProvider implements vscode.HoverProvider {
 			const fileUri = files[0];
 			const md = new vscode.MarkdownString();
 			md.isTrusted = true;
-			md.appendMarkdown(`**${m.name}**\n\n`);
+			md.appendMarkdown(`### ${m.name}\n\n`);
 			const workspaceFolder = vscode.workspace.getWorkspaceFolder(fileUri);
 			const relativePath = workspaceFolder
 				? vscode.workspace.asRelativePath(fileUri)

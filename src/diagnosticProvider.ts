@@ -1,4 +1,9 @@
 import * as vscode from 'vscode';
+import {
+	supportedLanguages,
+	templateRequiredSeverity,
+	templateRootSeverity
+} from './settings';
 
 const TEMPLATE_DIRECTIVE_REGEX = /<template\b(?=[^>]*\bx-(?:for|if)\b)[^>]*>/gi;
 
@@ -42,7 +47,44 @@ function countDirectChildren(text: string, startOffset: number): { childCount: n
 	return { childCount, closingTagEnd: text.length };
 }
 
-function analyzeDocument(document: vscode.TextDocument): vscode.Diagnostic[] {
+// Open tags, tolerating quoted attribute values that contain ">".
+const OPEN_TAG_REGEX = /<([a-zA-Z][a-zA-Z0-9-]*)((?:[^>"']|"[^"]*"|'[^']*')*)>/g;
+const TEMPLATE_ONLY_DIRECTIVE_REGEX = /\bx-(if|for|teleport)\s*=/;
+
+function checkTemplateRequired(document: vscode.TextDocument, severity: vscode.DiagnosticSeverity): vscode.Diagnostic[] {
+	const text = document.getText();
+	const diagnostics: vscode.Diagnostic[] = [];
+	const tagRegex = new RegExp(OPEN_TAG_REGEX.source, OPEN_TAG_REGEX.flags);
+
+	let match: RegExpExecArray | null;
+	while ((match = tagRegex.exec(text)) !== null) {
+		const tagName = match[1].toLowerCase();
+		if (tagName === 'template') continue;
+
+		const attrs = match[2];
+		const directive = TEMPLATE_ONLY_DIRECTIVE_REGEX.exec(attrs);
+		if (!directive) continue;
+
+		const directiveOffset = match.index + 1 + match[1].length + directive.index;
+		const directiveName = `x-${directive[1]}`;
+		const range = new vscode.Range(
+			document.positionAt(directiveOffset),
+			document.positionAt(directiveOffset + directiveName.length)
+		);
+
+		const diag = new vscode.Diagnostic(
+			range,
+			`${directiveName} only works on a <template> tag, not <${tagName}>.`,
+			severity
+		);
+		diag.source = 'alpinejs';
+		diagnostics.push(diag);
+	}
+
+	return diagnostics;
+}
+
+function checkTemplateRoot(document: vscode.TextDocument, severity: vscode.DiagnosticSeverity): vscode.Diagnostic[] {
 	const text = document.getText();
 	const diagnostics: vscode.Diagnostic[] = [];
 	const regex = new RegExp(TEMPLATE_DIRECTIVE_REGEX.source, TEMPLATE_DIRECTIVE_REGEX.flags);
@@ -65,7 +107,7 @@ function analyzeDocument(document: vscode.TextDocument): vscode.Diagnostic[] {
 			const diag = new vscode.Diagnostic(
 				range,
 				`<template ${directiveName}> must contain exactly one root element, but found ${result.childCount}.`,
-				vscode.DiagnosticSeverity.Error
+				severity
 			);
 			diag.source = 'alpinejs';
 			diagnostics.push(diag);
@@ -75,30 +117,47 @@ function analyzeDocument(document: vscode.TextDocument): vscode.Diagnostic[] {
 	return diagnostics;
 }
 
-export function setupAlpineDiagnostics(
-	context: vscode.ExtensionContext,
-	supportedLanguages: string[]
-): void {
+function analyzeDocument(document: vscode.TextDocument): vscode.Diagnostic[] {
+	const diagnostics: vscode.Diagnostic[] = [];
+	const rootSeverity = templateRootSeverity();
+	if (rootSeverity !== undefined) {
+		diagnostics.push(...checkTemplateRoot(document, rootSeverity));
+	}
+	const requiredSeverity = templateRequiredSeverity();
+	if (requiredSeverity !== undefined) {
+		diagnostics.push(...checkTemplateRequired(document, requiredSeverity));
+	}
+	return diagnostics;
+}
+
+export function setupAlpineDiagnostics(context: vscode.ExtensionContext): void {
 	const diagnosticCollection = vscode.languages.createDiagnosticCollection('alpinejs');
 	context.subscriptions.push(diagnosticCollection);
 
-	let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+	const debounceTimers = new Map<string, ReturnType<typeof setTimeout>>();
 	const DEBOUNCE_MS = 500;
 
 	function isSupported(doc: vscode.TextDocument): boolean {
-		return supportedLanguages.includes(doc.languageId) && doc.uri.scheme === 'file';
+		return supportedLanguages().includes(doc.languageId) && doc.uri.scheme === 'file';
+	}
+
+	function anyCheckEnabled(): boolean {
+		return templateRootSeverity() !== undefined || templateRequiredSeverity() !== undefined;
 	}
 
 	function scheduleUpdate(document: vscode.TextDocument): void {
-		if (!isSupported(document)) { return; }
-		if (debounceTimer) { clearTimeout(debounceTimer); }
-		debounceTimer = setTimeout(() => {
+		if (!anyCheckEnabled() || !isSupported(document)) { return; }
+		const key = document.uri.toString();
+		const existing = debounceTimers.get(key);
+		if (existing) { clearTimeout(existing); }
+		debounceTimers.set(key, setTimeout(() => {
+			debounceTimers.delete(key);
 			diagnosticCollection.set(document.uri, analyzeDocument(document));
-		}, DEBOUNCE_MS);
+		}, DEBOUNCE_MS));
 	}
 
 	function immediateUpdate(document: vscode.TextDocument): void {
-		if (!isSupported(document)) { return; }
+		if (!anyCheckEnabled() || !isSupported(document)) { return; }
 		diagnosticCollection.set(document.uri, analyzeDocument(document));
 	}
 
@@ -106,7 +165,17 @@ export function setupAlpineDiagnostics(
 		vscode.workspace.onDidOpenTextDocument(immediateUpdate),
 		vscode.workspace.onDidSaveTextDocument(immediateUpdate),
 		vscode.workspace.onDidChangeTextDocument(e => scheduleUpdate(e.document)),
-		vscode.workspace.onDidCloseTextDocument(doc => diagnosticCollection.delete(doc.uri))
+		vscode.workspace.onDidCloseTextDocument(doc => diagnosticCollection.delete(doc.uri)),
+		vscode.workspace.onDidChangeConfiguration(event => {
+			if (
+				event.affectsConfiguration('alpinejs.diagnostics.templateRoot') ||
+				event.affectsConfiguration('alpinejs.diagnostics.templateRequired') ||
+				event.affectsConfiguration('alpinejs.languages')
+			) {
+				diagnosticCollection.clear();
+				vscode.workspace.textDocuments.forEach(immediateUpdate);
+			}
+		})
 	);
 
 	vscode.workspace.textDocuments.forEach(immediateUpdate);

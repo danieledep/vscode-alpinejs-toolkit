@@ -1,11 +1,14 @@
 import * as vscode from "vscode";
 import { findComponentFiles, findXDataComponentNames } from "./alpineUtils";
+import { AlpineGlobalsIndex } from "./globalsIndex";
 
 interface AlpineComponentLink extends vscode.DocumentLink {
 	componentName: string;
 }
 
 export class AlpineDataDocumentLinkProvider implements vscode.DocumentLinkProvider<AlpineComponentLink> {
+	constructor(private globalsIndex?: AlpineGlobalsIndex) {}
+
 	provideDocumentLinks(
 		document: vscode.TextDocument,
 		_token: vscode.CancellationToken,
@@ -33,6 +36,16 @@ export class AlpineDataDocumentLinkProvider implements vscode.DocumentLinkProvid
 		link: AlpineComponentLink,
 		_token: vscode.CancellationToken,
 	): Promise<AlpineComponentLink | undefined> {
+		// Prefer the exact Alpine.data('name', ...) registration when the
+		// globals index knows it; the fragment makes the link open at that line.
+		const definition = await this.globalsIndex?.findDefinition("data", link.componentName);
+		if (definition) {
+			link.target = definition.uri.with({
+				fragment: `L${definition.range.start.line + 1},${definition.range.start.character + 1}`,
+			});
+			return link;
+		}
+
 		const files = await findComponentFiles(link.componentName);
 		if (files.length === 0) return undefined;
 
