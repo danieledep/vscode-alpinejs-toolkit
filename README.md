@@ -128,5 +128,3 @@ Language support (grammar, language id) for Astro, Blade, HEEx and the template 
 This started as a fork of [Sperovita/alpinejs-syntax-highlight](https://github.com/Sperovita/alpinejs-syntax-highlight)
 
 Based off of textmate syntaxes from [Vetur](https://github.com/vuejs/vetur)
-
-Directive documentation adapted from the [Alpine.js docs](https://alpinejs.dev/), inspired by [pcbowers/alpine-intellisense](https://github.com/pcbowers/alpine-intellisense) and [ConnorOnTheWeb/alpinejs-tools](https://github.com/ConnorOnTheWeb/alpinejs-tools)
