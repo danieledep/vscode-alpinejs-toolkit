@@ -1,6 +1,6 @@
 # vscode-alpinejs-toolkit
 
-IntelliSense tools for [Alpine.js](https://alpinejs.dev/): JavaScript syntax highlighting inside `x-` attributes, directive documentation and autocompletion, `$refs`/`$store`/magic suggestions, component file linking, snippets and template diagnostics.
+The complete IntelliSense toolkit for [Alpine.js](https://alpinejs.dev/) in VS Code: JavaScript syntax highlighting inside `x-` attributes, directive documentation and autocompletion, `$refs`/`$store`/magic suggestions, component file linking, snippets and template diagnostics.
 
 Everything is built on the APIs VS Code already exposes — no language server, no background processes.
 
@@ -25,8 +25,6 @@ It also renders greyed-out comments inside `x-` attributes:
 ```
 
 Set `alpinejs.highlighting.mode` to `always` to highlight every `x-` attribute value as JavaScript without needing a comment. Changing the mode prompts a window reload (TextMate grammars load once per window).
-
-Note: `always` mode also treats template tags (Twig, Jinja, ...) inside attribute values as JavaScript — stick to `comment` mode in those files.
 
 ### Supported marker comments
 
