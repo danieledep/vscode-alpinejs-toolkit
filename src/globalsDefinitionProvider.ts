@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 import { AlpineGlobalsIndex } from './globalsIndex';
-import { findXDataComponentNames } from './alpineUtils';
+import { findComponentFiles, findXDataComponentNames } from './alpineUtils';
 
 const STORE_USE_REGEX = /\$store\.([A-Za-z_$][\w$]*)/g;
 
 /**
  * Go-to-definition from `$store.name` to `Alpine.store('name', ...)` and from
- * an `x-data` component name to `Alpine.data('name', ...)`.
+ * an `x-data` component name to its component file, falling back to the
+ * `Alpine.data('name', ...)` registration.
  */
 export class AlpineGlobalsDefinitionProvider implements vscode.DefinitionProvider {
 	constructor(private globalsIndex: AlpineGlobalsIndex) {}
@@ -29,6 +30,12 @@ export class AlpineGlobalsDefinitionProvider implements vscode.DefinitionProvide
 
 		for (const component of findXDataComponentNames(text)) {
 			if (offset >= component.offset && offset <= component.offset + component.length) {
+				// Prefer the component's own file; fall back to the
+				// Alpine.data('name', ...) registration line.
+				const files = await findComponentFiles(component.name);
+				if (files.length > 0) {
+					return new vscode.Location(files[0], new vscode.Position(0, 0));
+				}
 				return this.globalsIndex.findDefinition('data', component.name);
 			}
 		}

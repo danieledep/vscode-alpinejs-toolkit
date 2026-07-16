@@ -4,7 +4,7 @@
 	"description": "Alpine.js IntelliSense tools: JavaScript syntax highlighting for x- attributes (comment-triggered or automatic), directive docs and autocompletion, $refs/$store/$magic suggestions, component file linking, snippets and template diagnostics.",
 	"author": "Daniele De Pietri",
 	"license": "MIT",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"publisher": "danieledep",
 	"repository": {
 		"type": "git",

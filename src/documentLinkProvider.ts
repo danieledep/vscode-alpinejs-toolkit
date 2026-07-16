@@ -36,20 +36,20 @@ export class AlpineDataDocumentLinkProvider implements vscode.DocumentLinkProvid
 		link: AlpineComponentLink,
 		_token: vscode.CancellationToken,
 	): Promise<AlpineComponentLink | undefined> {
-		// Prefer the exact Alpine.data('name', ...) registration when the
-		// globals index knows it; the fragment makes the link open at that line.
-		const definition = await this.globalsIndex?.findDefinition("data", link.componentName);
-		if (definition) {
-			link.target = definition.uri.with({
-				fragment: `L${definition.range.start.line + 1},${definition.range.start.character + 1}`,
-			});
+		// Prefer the component's own file (camelCase or kebab-case .js/.ts);
+		// fall back to the Alpine.data('name', ...) registration line.
+		const files = await findComponentFiles(link.componentName);
+		if (files.length > 0) {
+			link.target = files[0];
 			return link;
 		}
 
-		const files = await findComponentFiles(link.componentName);
-		if (files.length === 0) return undefined;
+		const definition = await this.globalsIndex?.findDefinition("data", link.componentName);
+		if (!definition) return undefined;
 
-		link.target = files[0];
+		link.target = definition.uri.with({
+			fragment: `L${definition.range.start.line + 1},${definition.range.start.character + 1}`,
+		});
 		return link;
 	}
 }

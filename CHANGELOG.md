@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.1]
+
+- Changed `x-data` component navigation (Cmd+click and Go to Definition) to open the matching component file first, falling back to the `Alpine.data('name', ...)` registration line when no file matches
+
 ## [0.1.0]
 
 - Renamed the extension from `alpinejs-comment-hl` to `vscode-alpinejs-toolkit` (display name: Alpine.js Toolkit)
