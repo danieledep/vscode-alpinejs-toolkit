@@ -24,7 +24,7 @@ It also renders greyed-out comments inside `x-` attributes:
   }"
 ```
 
-Set `alpinejs.highlighting.mode` to `always` to highlight every `x-` attribute value as JavaScript without needing a comment. Changing the mode prompts a window reload (TextMate grammars load once per window).
+Set `alpinejs.highlighting.mode` to `always` to highlight every `x-` attribute value as JavaScript without needing a comment, or to `off` to disable the injection entirely and leave attribute styling to the base language grammar. Changing the mode prompts a window reload (TextMate grammars load once per window).
 
 ### Supported marker comments
 
@@ -90,7 +90,7 @@ Two sets, individually toggleable and applied without reloading:
 
 | Setting | Default | Description |
 | --- | --- | --- |
-| `alpinejs.highlighting.mode` | `comment` | `comment` requires a `// js` marker, `always` highlights every `x-` attribute value as JavaScript. |
+| `alpinejs.highlighting.mode` | `comment` | `comment` requires a `// js` marker, `always` highlights every `x-` attribute value as JavaScript, `off` disables the injection entirely. |
 | `alpinejs.snippets.structured` | `true` | Opinionated multi-line snippets. |
 | `alpinejs.snippets.basic` | `true` | Single-attribute directive and modifier snippets. |
 | `alpinejs.completions.magics` | `true` | `$magic` suggestions. |

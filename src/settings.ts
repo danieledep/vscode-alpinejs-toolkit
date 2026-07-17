@@ -7,7 +7,7 @@ export const DEFAULT_LANGUAGES = [
 	'astro', 'phoenix-heex', 'html-eex', 'erb', 'django-html', 'handlebars'
 ];
 
-export type HighlightingMode = 'comment' | 'always';
+export type HighlightingMode = 'comment' | 'always' | 'off';
 
 export function getConfig() {
 	return vscode.workspace.getConfiguration(CONFIG_SECTION);

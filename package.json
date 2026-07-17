@@ -4,7 +4,7 @@
 	"description": "Alpine.js IntelliSense tools: JavaScript syntax highlighting for x- attributes (comment-triggered or automatic), directive docs and autocompletion, $refs/$store/$magic suggestions, component file linking, snippets and template diagnostics.",
 	"author": "Daniele De Pietri",
 	"license": "MIT",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"publisher": "danieledep",
 	"repository": {
 		"type": "git",
@@ -70,12 +70,14 @@
 					"type": "string",
 					"enum": [
 						"comment",
-						"always"
+						"always",
+						"off"
 					],
 					"default": "comment",
 					"enumDescriptions": [
 						"Highlight x- attribute values as JavaScript only when the value starts with a marker comment such as `// js`.",
-						"Always highlight x- attribute values as JavaScript. Note: template tags (Twig, Jinja, etc.) inside attribute values will also be treated as JavaScript."
+						"Always highlight x- attribute values as JavaScript. Note: template tags (Twig, Jinja, etc.) inside attribute values will also be treated as JavaScript.",
+						"Disable the Alpine.js syntax highlighting injection entirely. Attribute styling is left to the base language grammar."
 					],
 					"markdownDescription": "Controls when the JavaScript syntax highlighting inside Alpine.js `x-` attribute values is applied. Changing this requires a window reload (you will be prompted)."
 				},

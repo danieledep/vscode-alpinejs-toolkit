@@ -9,7 +9,8 @@ import { highlightingMode, HighlightingMode } from './settings';
 const GRAMMAR_TARGET = 'syntaxes/injection.json';
 const GRAMMAR_VARIANTS: Record<HighlightingMode, string> = {
 	comment: 'syntaxes/injection.comment.json',
-	always: 'syntaxes/injection.always.json'
+	always: 'syntaxes/injection.always.json',
+	off: 'syntaxes/injection.off.json'
 };
 
 async function syncGrammar(extensionPath: string): Promise<void> {

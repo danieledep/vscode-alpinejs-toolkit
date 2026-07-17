@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.1.2]
+
+- Fixed syntax highlighting for event listeners with multiple colon-separated segments (e.g. `@shopify:section:select.window`) in all highlighting modes; colon segments now also allow digits
+- Added `off` value to `alpinejs.highlighting.mode` to disable the syntax highlighting injection entirely, leaving attribute styling to the base language grammar
+
 ## [0.1.1]
 
 - Changed `x-data` component navigation (Cmd+click and Go to Definition) to open the matching component file first, falling back to the `Alpine.data('name', ...)` registration line when no file matches
