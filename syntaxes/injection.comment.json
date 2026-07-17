@@ -142,6 +142,11 @@
                   ]
                 },
                 {
+                  "begin": "\\{%-?(?=\\s*#)",
+                  "end": "-?%\\}",
+                  "name": "comment.block"
+                },
+                {
                   "begin": "\\{%-?",
                   "end": "-?%\\}",
                   "name": "meta.tag.template.block.twig",
