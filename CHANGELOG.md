@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [0.1.4]
 
 - Added the `x-intersect` `.dwell` modifier introduced in Alpine.js 3.17.1: `.dwell` snippet plus `x-intersect` hover/completion coverage of the duration syntax and 250ms default
 
