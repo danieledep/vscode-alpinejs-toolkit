@@ -194,6 +194,11 @@
 		"body": ".parent",
 		"description": "x-intersect: observes visibility within the element's parent instead of the viewport. Requires Alpine 3.16.0+."
 	},
+	".dwell": {
+		"prefix": ".dwell",
+		"body": ".dwell.${1:500}ms",
+		"description": "x-intersect: only fires once the element has stayed in view for the given duration (default 250ms; the timer restarts if the element leaves before it elapses). Requires Alpine 3.17.1+."
+	},
 	".inert": {
 		"prefix": ".inert",
 		"body": ".inert",

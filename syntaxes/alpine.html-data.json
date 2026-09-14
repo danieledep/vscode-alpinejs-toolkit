@@ -291,7 +291,7 @@
       "name": "x-intersect",
       "description": {
         "kind": "markdown",
-        "value": "### x-intersect\n\n*Requires the `@alpinejs/intersect` plugin.*\n\nRuns an expression when the element enters the viewport. Use `x-intersect:leave` for exit. Modifiers: `.once`, `.half`, `.full`, `.threshold.50`, `.margin.200px`, `.parent`.\n\n```html\n<div x-intersect=\"shown = true\">\n```\n\n`.parent` observes the element against its parent instead of the viewport — useful inside a scrollable container (Alpine 3.16.0+):\n\n```html\n<div class=\"overflow-y-scroll\">\n    <div x-intersect.parent=\"shown = true\"></div>\n</div>\n```"
+        "value": "### x-intersect\n\n*Requires the `@alpinejs/intersect` plugin.*\n\nRuns an expression when the element enters the viewport. Use `x-intersect:leave` for exit. Modifiers: `.once`, `.half`, `.full`, `.threshold.50`, `.margin.200px`, `.parent`, `.dwell.500ms`.\n\n```html\n<div x-intersect=\"shown = true\">\n```\n\n`.parent` observes the element against its parent instead of the viewport — useful inside a scrollable container (Alpine 3.16.0+):\n\n```html\n<div class=\"overflow-y-scroll\">\n    <div x-intersect.parent=\"shown = true\"></div>\n</div>\n```\n\n`.dwell` waits until the element has stayed in view for a duration before evaluating — 250ms by default, and the timer restarts if the element leaves early (Alpine 3.17.1+):\n\n```html\n<div x-intersect.half.dwell.500ms.once=\"viewed = true\">\n```"
       },
       "references": [
         {
