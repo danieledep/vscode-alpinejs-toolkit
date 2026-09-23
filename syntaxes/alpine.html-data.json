@@ -330,7 +330,7 @@
       "name": "x-resize",
       "description": {
         "kind": "markdown",
-        "value": "### x-resize\n\n*Requires the `@alpinejs/resize` plugin.*\n\nRuns an expression whenever the element changes size. Inside the expression, `$width` and `$height` hold the current dimensions in pixels. Use the `.document` modifier to observe the whole document instead.\n\n```html\n<div x-resize=\"width = $width; height = $height\">\n```"
+        "value": "### x-resize\n\n*Requires the `@alpinejs/resize` plugin.*\n\nRuns an expression whenever the element changes size. Inside the expression, `$width` and `$height` hold the current dimensions in pixels. Use the `.document` modifier to observe the whole document instead.\n\n```html\n<div x-resize=\"width = $width; height = $height\">\n```\n\n`.viewport` tracks `window.visualViewport` instead — useful for reacting to the on-screen keyboard or pinch-zoom on mobile — and falls back to the document element if `visualViewport` isn't supported (Alpine 3.17.4+):\n\n```html\n<div x-resize.viewport=\"width = $width; height = $height\">\n```"
       },
       "references": [
         {

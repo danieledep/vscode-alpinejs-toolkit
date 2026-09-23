@@ -1,5 +1,9 @@
 # Change Log
 
+## [Unreleased]
+
+- Added the `x-resize` `.viewport` modifier introduced in Alpine.js 3.17.4: `.viewport` snippet plus `x-resize` hover/completion coverage of the `window.visualViewport` tracking behavior and document-element fallback
+
 ## [0.1.4]
 
 - Added the `x-intersect` `.dwell` modifier introduced in Alpine.js 3.17.1: `.dwell` snippet plus `x-intersect` hover/completion coverage of the duration syntax and 250ms default
