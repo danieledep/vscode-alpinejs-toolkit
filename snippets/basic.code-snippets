@@ -199,6 +199,11 @@
 		"body": ".dwell.${1:500}ms",
 		"description": "x-intersect: only fires once the element has stayed in view for the given duration (default 250ms; the timer restarts if the element leaves before it elapses). Requires Alpine 3.17.1+."
 	},
+	".viewport": {
+		"prefix": ".viewport",
+		"body": ".viewport",
+		"description": "x-resize: tracks window.visualViewport instead of the element, so $width/$height reflect on-screen keyboard and pinch-zoom changes. Falls back to the document element if visualViewport is unavailable. Requires Alpine 3.17.4+."
+	},
 	".inert": {
 		"prefix": ".inert",
 		"body": ".inert",
