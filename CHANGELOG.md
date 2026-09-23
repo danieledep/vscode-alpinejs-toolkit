@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [0.1.5]
 
 - Added the `x-resize` `.viewport` modifier introduced in Alpine.js 3.17.4: `.viewport` snippet plus `x-resize` hover/completion coverage of the `window.visualViewport` tracking behavior and document-element fallback
 
