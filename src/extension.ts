@@ -13,6 +13,7 @@ import { AlpineGlobalsIndex } from './globalsIndex';
 import { AlpineEventIndex } from './eventIndex';
 import { AlpineRefsNavigationProvider } from './refsNavigationProvider';
 import { AlpineGlobalsDefinitionProvider } from './globalsDefinitionProvider';
+import { AlpineSymbolDefinitionProvider } from './symbolDefinitionProvider';
 import { AlpineDocsHoverProvider } from './docsHoverProvider';
 import { AlpineComponentSymbolProvider } from './componentSymbolProvider';
 import { documentSelector } from './settings';
@@ -32,6 +33,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	const magicProvider = new AlpineMagicCompletionProvider(globalsIndex, eventIndex);
 	const refsProvider = new AlpineRefsNavigationProvider();
 	const globalsDefinitionProvider = new AlpineGlobalsDefinitionProvider(globalsIndex);
+	const symbolDefinitionProvider = new AlpineSymbolDefinitionProvider(globalsIndex);
 	const symbolProvider = new AlpineComponentSymbolProvider();
 
 	// Providers are registered against the configured languages; when that
@@ -72,6 +74,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			),
 			vscode.languages.registerDefinitionProvider(selector, refsProvider),
 			vscode.languages.registerDefinitionProvider(selector, globalsDefinitionProvider),
+			vscode.languages.registerDefinitionProvider(selector, symbolDefinitionProvider),
 			vscode.languages.registerReferenceProvider(selector, refsProvider),
 			vscode.languages.registerRenameProvider(selector, refsProvider),
 			vscode.languages.registerDocumentSymbolProvider(

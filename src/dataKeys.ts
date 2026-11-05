@@ -1,16 +1,27 @@
 // Pure helpers for extracting names from Alpine expressions in a document.
 // Deliberately free of any 'vscode' import so they can be tested in plain Node.
 
+export interface KeyEntry {
+	name: string;
+	/** Offset of the name inside the source passed in. */
+	offset: number;
+}
+
 /**
  * Extracts the top-level property and method names from a JavaScript object
  * literal source (starting at its opening brace). Conservative by design:
  * spread and computed keys are skipped, anything unparseable is ignored.
  */
 export function extractTopLevelKeys(objectSource: string): string[] {
+	return [...new Set(extractTopLevelKeyEntries(objectSource).map(entry => entry.name))];
+}
+
+/** Like `extractTopLevelKeys`, but keeps every key with its offset. */
+export function extractTopLevelKeyEntries(objectSource: string): KeyEntry[] {
 	const start = objectSource.indexOf('{');
 	if (start === -1) return [];
 
-	const segments: string[] = [];
+	const segments: { text: string; offset: number }[] = [];
 	let depth = 1;
 	let segmentStart = start + 1;
 	let quote: string | undefined;
@@ -24,6 +35,16 @@ export function extractTopLevelKeys(objectSource: string): string[] {
 			if (char === quote) quote = undefined;
 			continue;
 		}
+		if (char === '/' && objectSource[i + 1] === '/') {
+			const end = objectSource.indexOf('\n', i);
+			i = end === -1 ? objectSource.length : end;
+			continue;
+		}
+		if (char === '/' && objectSource[i + 1] === '*') {
+			const end = objectSource.indexOf('*/', i + 2);
+			i = end === -1 ? objectSource.length : end + 1;
+			continue;
+		}
 		if (char === "'" || char === '"' || char === '`') { quote = char; continue; }
 
 		if (char === '{' || char === '[' || char === '(') { depth++; continue; }
@@ -33,20 +54,23 @@ export function extractTopLevelKeys(objectSource: string): string[] {
 			continue;
 		}
 		if (char === ',' && depth === 1) {
-			segments.push(objectSource.slice(segmentStart, i));
+			segments.push({ text: objectSource.slice(segmentStart, i), offset: segmentStart });
 			segmentStart = i + 1;
 		}
 	}
-	segments.push(objectSource.slice(segmentStart, i));
+	segments.push({ text: objectSource.slice(segmentStart, i), offset: segmentStart });
 
-	const keys: string[] = [];
+	const keys: KeyEntry[] = [];
 	for (const segment of segments) {
-		const trimmed = segment.trim();
+		// Skip leading whitespace and comments to find where the key starts.
+		const lead = /^(?:\s|\/\/[^\n]*|\/\*[\s\S]*?\*\/)*/.exec(segment.text)![0];
+		const trimmed = segment.text.slice(lead.length).trimEnd();
+		const base = segment.offset + lead.length;
 		if (trimmed === '' || trimmed.startsWith('...') || trimmed.startsWith('[')) continue;
 
 		const quoted = /^(['"])([^'"]+)\1\s*:/.exec(trimmed);
 		if (quoted) {
-			keys.push(quoted[2]);
+			keys.push({ name: quoted[2], offset: base + 1 });
 			continue;
 		}
 
@@ -56,11 +80,11 @@ export function extractTopLevelKeys(objectSource: string): string[] {
 		const rest = trimmed.slice(plain[0].length).trimStart();
 		// Property (`open: false`), method (`toggle() {}`), or shorthand (`open`).
 		if (rest.startsWith(':') || rest.startsWith('(') || rest === '') {
-			keys.push(name);
+			keys.push({ name, offset: base + plain[0].length - name.length });
 		}
 	}
 
-	return [...new Set(keys)];
+	return keys;
 }
 
 const X_DATA_ATTR_REGEX = /x-data\s*=\s*(?:"([^"]*)"|'([^']*)')/g;
