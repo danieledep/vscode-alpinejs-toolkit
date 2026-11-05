@@ -1,5 +1,9 @@
 # Change Log
 
+## [Unreleased]
+
+- Added Go to Definition and Cmd/Ctrl+click for data used inside Alpine attribute values: keys of the enclosing inline `x-data` object, keys returned by `Alpine.data(...)` registrations, inline component functions and component files, `x-for` loop variables, and `$store.name.property` (`alpinejs.definitions.symbols`)
+
 ## [0.1.5]
 
 - Added the `x-resize` `.viewport` modifier introduced in Alpine.js 3.17.4: `.viewport` snippet plus `x-resize` hover/completion coverage of the `window.visualViewport` tracking behavior and document-element fallback

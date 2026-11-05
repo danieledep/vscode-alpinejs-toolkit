@@ -121,6 +121,11 @@
 					"default": true,
 					"markdownDescription": "Show Alpine.js documentation on hover for directives and magic properties. Directive hovers apply outside plain HTML files (which already get them from the built-in HTML language service)."
 				},
+				"alpinejs.definitions.symbols": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable Go to Definition and Cmd/Ctrl+click on data used in attribute values: `x-for` loop variables, keys of the enclosing `x-data` object, keys returned by `Alpine.data(...)` or component functions, and `$store.name.property`."
+				},
 				"alpinejs.outline.components": {
 					"type": "boolean",
 					"default": true,

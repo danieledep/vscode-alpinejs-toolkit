@@ -60,6 +60,7 @@ All core Alpine.js directives (`x-data`, `x-show`, `x-on:`, `x-bind:`, `x-model`
 
 - Cmd+click (or Ctrl+click) on an `x-data` component name opens the matching component file (camelCase or kebab-case `.js`/`.ts`) when one exists, falling back to the `Alpine.data('name', ...)` registration at the exact line. Hovering shows the resolved file path.
 - Go to Definition works on `$store.name` (jumps to `Alpine.store('name', ...)`) and on `$refs.name` (jumps to the `x-ref="name"` element).
+- Cmd+click (or Ctrl+click) and Go to Definition work on the data you use inside Alpine attributes, like in a JS file: `open` in `@click="open = !open"` jumps to the `open` key of the enclosing `x-data` object, or to the key returned by its component (`Alpine.data('name', () => ({ ... }))`, a `function name() { return { ... } }` in an inline `<script>`, or a file named after the component). `x-for` loop variables and `$store.name.property` resolve too. Lookups follow the element nesting, so the nearest scope wins; chained paths like `item.user.name` are not resolved (`alpinejs.definitions.symbols`).
 - Find All References and Rename (F2) work on `x-ref` names — renaming updates the `x-ref` attribute and every `$refs.` usage in the file together.
 - Every `x-data` component appears in the file outline and breadcrumbs, named after its component function or a preview of its data keys.
 

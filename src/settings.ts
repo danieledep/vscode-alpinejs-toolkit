@@ -76,6 +76,10 @@ export function docsHoversEnabled(): boolean {
 	return getConfig().get<boolean>('hovers.docs', true);
 }
 
+export function symbolDefinitionsEnabled(): boolean {
+	return getConfig().get<boolean>('definitions.symbols', true);
+}
+
 export function outlineEnabled(): boolean {
 	return getConfig().get<boolean>('outline.components', true);
 }
