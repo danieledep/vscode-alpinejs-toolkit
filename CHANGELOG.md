@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [0.1.6]
 
 - Added Go to Definition and Cmd/Ctrl+click for data used inside Alpine attribute values: keys of the enclosing inline `x-data` object, keys returned by `Alpine.data(...)` registrations, inline component functions and component files, `x-for` loop variables, and `$store.name.property` (`alpinejs.definitions.symbols`)
 
