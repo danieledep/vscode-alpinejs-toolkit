@@ -135,7 +135,8 @@ function insideStringOrComment(value: string, index: number): boolean {
 }
 
 function loopNames(attribute: Attribute): KeyEntry[] {
-	const match = /^([\s\S]*?)\s+(?:in|of)\s/.exec(attribute.value);
+	// Mirrors Alpine's forAliasRE (3.17.3+), which also accepts `(item)in(items)`.
+	const match = /^([\s\S]*?)\b(?:in|of)\b/.exec(attribute.value);
 	if (!match) return [];
 	const names: KeyEntry[] = [];
 	const regex = new RegExp(IDENTIFIER_REGEX.source, IDENTIFIER_REGEX.flags);
