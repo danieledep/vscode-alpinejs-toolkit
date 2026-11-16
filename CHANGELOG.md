@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.7]
+
+- Fixed Go to Definition for `x-for` loop variables when `in`/`of` isn't surrounded by spaces (e.g. `x-for="(item)in(items)"`), matching the relaxed `x-for` parsing introduced in Alpine.js 3.17.3
+
 ## [0.1.6]
 
 - Added Go to Definition and Cmd/Ctrl+click for data used inside Alpine attribute values: keys of the enclosing inline `x-data` object, keys returned by `Alpine.data(...)` registrations, inline component functions and component files, `x-for` loop variables, and `$store.name.property` (`alpinejs.definitions.symbols`)
